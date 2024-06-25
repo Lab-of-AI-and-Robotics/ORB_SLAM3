@@ -176,6 +176,8 @@ public:
     int GetTrackingState();
     std::vector<MapPoint*> GetTrackedMapPoints();
     std::vector<cv::KeyPoint> GetTrackedKeyPointsUn();
+    // Add) riboha
+    std::vector<MapPoint*> GetAllMapPoints();
 
     // For debugging
     double GetTimeFromIMUInit();
