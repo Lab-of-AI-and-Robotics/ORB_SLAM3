@@ -73,23 +73,24 @@ int main(int argc, char **argv)
   ros::NodeHandle n("~");
   ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Info);
   bool bEqual = false;
-  if(argc < 3 || argc > 4)
+
+  // Modified for launch files
+  std::string node_name = ros::this_node::getName();
+  std::string voc_file, settings_file;
+  n.param<std::string>(node_name + "/voc_file", voc_file, "file_not_set");
+  n.param<std::string>(node_name + "/settings_file", settings_file, "file_not_set");
+
+  if (voc_file == "file_not_set" || settings_file == "file_not_set")
   {
-    cerr << endl << "Usage: rosrun ORB_SLAM3 Mono_Inertial path_to_vocabulary path_to_settings [do_equalize]" << endl;
-    ros::shutdown();
-    return 1;
+      ROS_ERROR("Please provide voc_file and settings_file in the launch file");       
+      ros::shutdown();
+      return 1;
   }
 
-
-  if(argc==4)
-  {
-    std::string sbEqual(argv[3]);
-    if(sbEqual == "true")
-      bEqual = true;
-  }
+  std::string sbRect("true");
 
   // Create SLAM system. It initializes all system threads and gets ready to process frames.
-  ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::IMU_MONOCULAR,true);
+  ORB_SLAM3::System SLAM(voc_file, settings_file,ORB_SLAM3::System::IMU_MONOCULAR,true);
 
   ImuGrabber imugb;
   ImageGrabber igb(&SLAM,&imugb,bEqual); // TODO

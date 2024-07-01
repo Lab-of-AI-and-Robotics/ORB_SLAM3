@@ -51,25 +51,34 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "RGBD");
     ros::start();
 
-    if(argc != 4)
+    // Modified for launch files
+    ros::NodeHandle n("~");
+    std::string node_name = ros::this_node::getName();
+    std::string voc_file, settings_file;
+    n.param<std::string>(node_name + "/voc_file", voc_file, "file_not_set");
+    n.param<std::string>(node_name + "/settings_file", settings_file, "file_not_set");
+
+    if (voc_file == "file_not_set" || settings_file == "file_not_set")
     {
-        cerr << endl << "Usage: rosrun ORB_SLAM3 Stereo path_to_vocabulary path_to_settings do_rectify" << endl;
+        ROS_ERROR("Please provide voc_file and settings_file in the launch file");       
         ros::shutdown();
         return 1;
-    }    
+    }
+
+
 
     // Create SLAM system. It initializes all system threads and gets ready to process frames.
-    ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::STEREO,true);
+    ORB_SLAM3::System SLAM(voc_file,settings_file,ORB_SLAM3::System::STEREO,true);
 
     ImageGrabber igb(&SLAM);
 
-    stringstream ss(argv[3]);
+    stringstream ss("true");
 	ss >> boolalpha >> igb.do_rectify;
 
     if(igb.do_rectify)
     {      
         // Load settings related to stereo calibration
-        cv::FileStorage fsSettings(argv[2], cv::FileStorage::READ);
+        cv::FileStorage fsSettings(settings_file, cv::FileStorage::READ);
         if(!fsSettings.isOpened())
         {
             cerr << "ERROR: Wrong path to settings" << endl;

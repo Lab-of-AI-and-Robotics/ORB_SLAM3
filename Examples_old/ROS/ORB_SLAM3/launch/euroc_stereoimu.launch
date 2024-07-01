@@ -1,0 +1,13 @@
+<launch>
+    <!-- ORB-SLAM3 -->
+    <node name="orb_slam3_stereo_inertial" pkg="ORB_SLAM3" type="Stereo_Inertial" output="screen">
+        <!-- for EuRoC dataset -->
+        <remap from="/camera/left/image_raw"    to="/cam0/image_raw"/>
+        <remap from="/camera/right/image_raw"   to="/cam1/image_raw"/>
+        <remap from="/imu"                      to="/imu0"/>
+
+        <!-- Parameters for original ORB-SLAM3 -->
+        <param name="voc_file"      type="string"   value="/ORB_SLAM3/Vocabulary/ORBvoc.txt" />
+        <param name="settings_file" type="string"   value="/ORB_SLAM3/Examples_old/Stereo-Inertial/EuRoC.yaml" />
+    </node>
+</launch>

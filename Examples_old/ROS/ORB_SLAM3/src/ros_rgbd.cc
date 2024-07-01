@@ -49,15 +49,22 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "RGBD");
     ros::start();
 
-    if(argc != 3)
+    // Modified for launch files
+    ros::NodeHandle n("~");
+    std::string node_name = ros::this_node::getName();
+    std::string voc_file, settings_file;
+    n.param<std::string>(node_name + "/voc_file", voc_file, "file_not_set");
+    n.param<std::string>(node_name + "/settings_file", settings_file, "file_not_set");
+
+    if (voc_file == "file_not_set" || settings_file == "file_not_set")
     {
-        cerr << endl << "Usage: rosrun ORB_SLAM3 RGBD path_to_vocabulary path_to_settings" << endl;        
+        ROS_ERROR("Please provide voc_file and settings_file in the launch file");       
         ros::shutdown();
         return 1;
-    }    
+    }
 
     // Create SLAM system. It initializes all system threads and gets ready to process frames.
-    ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::RGBD,true);
+    ORB_SLAM3::System SLAM(voc_file, settings_file,ORB_SLAM3::System::RGBD,true);
 
     ImageGrabber igb(&SLAM);
 

@@ -1,0 +1,12 @@
+<launch>
+    <!-- ORB-SLAM3 -->
+    <node name="orb_slam3_stereo_inertial" pkg="ORB_SLAM3" type="Mono_Inertial" output="screen">
+        <!-- for EuRoC dataset -->
+        <remap from="/camera/image_raw"         to="/cam0/image_raw"/>
+        <remap from="/imu"                      to="/imu0"/>
+
+        <!-- Parameters for original ORB-SLAM3 -->
+        <param name="voc_file"      type="string"   value="/ORB_SLAM3/Vocabulary/ORBvoc.txt" />
+        <param name="settings_file" type="string"   value="/ORB_SLAM3/Examples_old/Monocular-Inertial/EuRoC.yaml" />
+    </node>
+</launch>
