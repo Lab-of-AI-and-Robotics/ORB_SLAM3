@@ -50,3 +50,28 @@ vector<MapPoint*> System::GetAllMapPoints()
     // const vector<MapPoint*> &vpRefMPs = pActiveMap->GetReferenceMapPoints();
 }
 ```
+
+### Re-initializing
+- src/LocalMapping.cc
+```cpp
+// line 133
+if(dist>0.05)
+mTinit += mpCurrentKeyFrame->mTimeStamp - mpCurrentKeyFrame->mPrevKF->mTimeStamp;
+
+// commented out here
+// if(!mpCurrentKeyFrame->GetMap()->GetIniertialBA2())
+// {
+//     if((mTinit<10.f) && (dist<0.02))
+//     {
+//         cout << "Not enough motion for initializing. Reseting..." << endl;
+//         unique_lock<mutex> lock(mMutexReset);
+//         mbResetRequestedActiveMap = true;
+//         mpMapToReset = mpCurrentKeyFrame->GetMap();
+//         mbBadImu = true;
+//     }
+// }
+
+bool bLarge = ((mpTracker->GetMatchesInliers()>75)&&mbMonocular)||((mpTracker->GetMatchesInliers()>100)&&!mbMonocular);
+Optimizer::LocalInertialBA(mpCurrentKeyFrame, &mbAbortBA, mpCurrentKeyFrame->GetMap(),num_FixedKF_BA,num_OptKF_BA,num_MPs_BA,num_edges_BA, bLarge, !mpCurrentKeyFrame->GetMap()->GetIniertialBA2());
+b_doneLBA = true;
+```

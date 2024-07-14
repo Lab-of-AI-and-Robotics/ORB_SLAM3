@@ -67,6 +67,9 @@ public:
 
     const bool mbClahe;
     cv::Ptr<cv::CLAHE> mClahe = cv::createCLAHE(3.0, cv::Size(8, 8));
+
+    // img_time + time_delay = imu_time
+    double time_delay = 0.0062;
 };
 
 

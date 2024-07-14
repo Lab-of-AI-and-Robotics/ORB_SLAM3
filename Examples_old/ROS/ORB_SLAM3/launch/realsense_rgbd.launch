@@ -7,6 +7,6 @@
 
         <!-- Parameters for original ORB-SLAM3 -->
         <param name="voc_file"      type="string"   value="/ORB_SLAM3/Vocabulary/ORBvoc.txt" />
-        <param name="settings_file" type="string"   value="/ORB_SLAM3/Examples/RGB-D/RealSense_D435i.yaml" />
+        <param name="settings_file" type="string"   value="/ORB_SLAM3/Examples_old/ROS/ORB_SLAM3/configs/RealSense_D435i.yaml" />
     </node>
 </launch>

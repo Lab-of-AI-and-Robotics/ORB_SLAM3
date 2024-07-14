@@ -29,7 +29,7 @@ Camera.fps: 30
 # Color order of the images (0: BGR, 1: RGB. It is ignored if images are grayscale)
 Camera.RGB: 1
 
-Stereo.ThDepth: 40.0
+Stereo.ThDepth: 20.0
 Stereo.b: 0.0745  # 0.0745
 
 # Depth map values factor
@@ -50,10 +50,10 @@ IMU.T_b_c1: !!opencv-matrix
 IMU.InsertKFsWhenLost: 0
 
 # IMU noise (Use those from VINS-mono)
-IMU.NoiseGyro: 1e-3 # 0.01
-IMU.NoiseAcc: 1e-2   # 0.1
-IMU.GyroWalk: 1e-7 # 2e-5
-IMU.AccWalk: 1e-7 # 0.0002
+IMU.NoiseGyro: 1e-3 # 1e-3
+IMU.NoiseAcc: 1e-2   # 1e-2
+IMU.GyroWalk: 1e-7 # 1e-7
+IMU.AccWalk: 1e-7 # 1e-7
 IMU.Frequency: 200.0
 
 #--------------------------------------------------------------------------------------------

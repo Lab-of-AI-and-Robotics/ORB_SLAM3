@@ -125,7 +125,6 @@ void LocalMapping::Run()
             {
                 if(mpAtlas->KeyFramesInMap()>2)
                 {
-
                     if(mbInertial && mpCurrentKeyFrame->GetMap()->isImuInitialized())
                     {
                         float dist = (mpCurrentKeyFrame->mPrevKF->GetCameraCenter() - mpCurrentKeyFrame->GetCameraCenter()).norm() +
@@ -133,17 +132,18 @@ void LocalMapping::Run()
 
                         if(dist>0.05)
                             mTinit += mpCurrentKeyFrame->mTimeStamp - mpCurrentKeyFrame->mPrevKF->mTimeStamp;
-                        if(!mpCurrentKeyFrame->GetMap()->GetIniertialBA2())
-                        {
-                            if((mTinit<10.f) && (dist<0.02))
-                            {
-                                cout << "Not enough motion for initializing. Reseting..." << endl;
-                                unique_lock<mutex> lock(mMutexReset);
-                                mbResetRequestedActiveMap = true;
-                                mpMapToReset = mpCurrentKeyFrame->GetMap();
-                                mbBadImu = true;
-                            }
-                        }
+
+                        // if(!mpCurrentKeyFrame->GetMap()->GetIniertialBA2())
+                        // {
+                        //     if((mTinit<10.f) && (dist<0.02))
+                        //     {
+                        //         cout << "Not enough motion for initializing. Reseting..." << endl;
+                        //         unique_lock<mutex> lock(mMutexReset);
+                        //         mbResetRequestedActiveMap = true;
+                        //         mpMapToReset = mpCurrentKeyFrame->GetMap();
+                        //         mbBadImu = true;
+                        //     }
+                        // }
 
                         bool bLarge = ((mpTracker->GetMatchesInliers()>75)&&mbMonocular)||((mpTracker->GetMatchesInliers()>100)&&!mbMonocular);
                         Optimizer::LocalInertialBA(mpCurrentKeyFrame, &mbAbortBA, mpCurrentKeyFrame->GetMap(),num_FixedKF_BA,num_OptKF_BA,num_MPs_BA,num_edges_BA, bLarge, !mpCurrentKeyFrame->GetMap()->GetIniertialBA2());
@@ -1187,7 +1187,6 @@ void LocalMapping::InitializeIMU(float priorG, float priorA, bool bFIBA)
         minTime = 1.0;
         nMinKF = 10;
     }
-
 
     if(mpAtlas->KeyFramesInMap()<nMinKF)
         return;
