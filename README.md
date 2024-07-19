@@ -27,7 +27,7 @@ If you use ORB-SLAM3 in an academic work, please cite:
 
 # Modified part
 
-### To publish all map points as a ros message
+## To publish all map points as a ros message
 - include/System.h
 ```cpp
 // line 175
@@ -51,7 +51,7 @@ vector<MapPoint*> System::GetAllMapPoints()
 }
 ```
 
-### Re-initializing
+## Re-initializing
 - src/LocalMapping.cc
 ```cpp
 // line 133
@@ -74,4 +74,13 @@ mTinit += mpCurrentKeyFrame->mTimeStamp - mpCurrentKeyFrame->mPrevKF->mTimeStamp
 bool bLarge = ((mpTracker->GetMatchesInliers()>75)&&mbMonocular)||((mpTracker->GetMatchesInliers()>100)&&!mbMonocular);
 Optimizer::LocalInertialBA(mpCurrentKeyFrame, &mbAbortBA, mpCurrentKeyFrame->GetMap(),num_FixedKF_BA,num_OptKF_BA,num_MPs_BA,num_edges_BA, bLarge, !mpCurrentKeyFrame->GetMap()->GetIniertialBA2());
 b_doneLBA = true;
+```
+
+## Re-localization in Localization mode
+
+- src/Tracking.cc
+```cpp
+    // line 2039
+    // if(mState==LOST)
+    if(mState == LOST || mState == RECENTLY_LOST)
 ```
