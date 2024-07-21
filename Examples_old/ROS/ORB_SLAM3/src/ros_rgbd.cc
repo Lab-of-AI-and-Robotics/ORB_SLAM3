@@ -53,8 +53,11 @@ int main(int argc, char **argv)
     ros::NodeHandle n("~");
     std::string node_name = ros::this_node::getName();
     std::string voc_file, settings_file;
+    bool localization_mode;
     n.param<std::string>(node_name + "/voc_file", voc_file, "file_not_set");
     n.param<std::string>(node_name + "/settings_file", settings_file, "file_not_set");
+    n.param<bool>(node_name + "/localization_mode", localization_mode, false);
+    std::cout << "localization mode: " + localization_mode << std::endl;
 
     if (voc_file == "file_not_set" || settings_file == "file_not_set")
     {
@@ -64,7 +67,8 @@ int main(int argc, char **argv)
     }
 
     // Create SLAM system. It initializes all system threads and gets ready to process frames.
-    ORB_SLAM3::System SLAM(voc_file, settings_file,ORB_SLAM3::System::RGBD,true);
+    ORB_SLAM3::System SLAM( voc_file, settings_file,ORB_SLAM3::System::RGBD,\
+                            true, 0, std::string(), localization_mode);
 
     ImageGrabber igb(&SLAM);
 

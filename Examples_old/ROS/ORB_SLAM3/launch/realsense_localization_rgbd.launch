@@ -1,0 +1,13 @@
+<launch>
+    <!-- ORB-SLAM3 -->
+    <node name="orb_slam3_stereo_inertial" pkg="ORB_SLAM3" type="RGBD" output="screen">
+        <!-- for EuRoC dataset -->
+        <remap from="/camera/rgb/image_raw"                 to="/camera/color/image_raw"/>
+        <remap from="/camera/depth_registered/image_raw"    to="/camera/aligned_depth_to_color/image_raw"/>
+
+        <!-- Parameters for original ORB-SLAM3 -->
+        <param name="voc_file"      type="string"   value="/ORB_SLAM3/Vocabulary/ORBvoc.txt" />
+        <param name="settings_file" type="string"   value="/ORB_SLAM3/Examples_old/ROS/ORB_SLAM3/configs/RealSense_D435i.yaml" />
+        <param name="localization_mode" type="bool"     value="true" />
+    </node>
+</launch>
